@@ -1,8 +1,12 @@
 # calculator
 
-A new Flutter project.
+A new Calculator app built in Flutter.
 
+Find the demo here:
+
+![][Demo1.gif]
 ## Getting Started
+
 
 This project is a starting point for a Flutter application.
 
