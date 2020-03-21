@@ -4,7 +4,7 @@ A new Calculator app built in Flutter.
 
 Find the demo here:
 
-![](Demo1.gif)
+![](Demo_compressed.gif)
 ## Getting Started
 
 
