@@ -1,6 +1,8 @@
 import 'dart:core';
+import 'package:calculator/pages/calculator.dart';
+import 'package:calculator/pages/notes.dart';
+import 'package:calculator/pages/weather.dart';
 import 'package:flutter/material.dart';
-import 'package:math_expressions/math_expressions.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,135 +25,95 @@ class MyApp extends StatelessWidget {
       title: 'MyCalc',
       theme: ThemeData(
         primarySwatch: Colors.amber,
-        //,)primaryColor: Colors.blue,
       ),
       debugShowCheckedModeBanner: false,
-      home: MyCalc(),
+      home: MainPage(),
     );
   }
 }
 
-class MyCalc extends StatefulWidget {
+class MainPage extends StatefulWidget {
   @override
-  MyCalcState createState() => MyCalcState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class MyCalcState extends State<MyCalc> {
-  String _toeval = '';
-  String _output = '0';
-  String past = '';
-  String result = '';
-
-  Widget buildButton(String value) {
-    return Expanded(
-      child: MaterialButton(
-        color: Colors.blue[100],
-        child: Text(
-          value,
-          style: TextStyle(
-            fontSize: 26,
-          ),
-        ),
-        onPressed: () {
-          setState(
-            () {
-              if (value == '=') {
-                Parser p = Parser();
-                Expression exp = p.parse(_toeval);
-                result = exp.evaluate(EvaluationType.REAL, null).toString();
-                print(result);
-                _output = result;
-                _toeval = '';
-              } else if (value == 'Clear') {
-                past = result;
-                _toeval = '';
-                _output = _toeval;
-              } else if (value == 'History+') {
-                //past = _output;
-                _toeval += past;
-                _output = _toeval;
-              } else {
-                _toeval += value;
-                _output = _toeval;
-              }
-            },
-          );
-        },
-      ),
-    );
-  }
-
-  var myStyleHistory = TextStyle(fontSize: 22, fontFamily: 'Montserrat');
-
+class _MainPageState extends State<MainPage> {
+  int curIndex = 3;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calculator by SSS'),
+        elevation: 10,
+        title: Text('MultiPurpose'),
       ),
-      body: Container(
-        child: Wrap(
-          children: <Widget>[
-            Container(
-              alignment: Alignment.topCenter,
-              height: 120,
-              child: Text(
-                'History: ' + past,
-                style: myStyleHistory,
+      body: SafeArea(
+        child: Container(
+          child: Row(
+            children: <Widget>[
+              NavigationRail(
+                selectedIndex: curIndex,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    curIndex = index;
+                  });
+                  // print('pupupupu ' + curIndex.toString());
+                },
+                labelType: NavigationRailLabelType.selected,
+                destinations: [
+                  NavigationRailDestination(
+                    icon: Icon(Icons.calendar_today),
+                    selectedIcon: Icon(Icons.calendar_today),
+                    label: Text('Calendar'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.add),
+                    selectedIcon: Icon(Icons.add_box),
+                    label: Text('Calculator'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.wb_sunny),
+                    selectedIcon: Icon(Icons.wb_cloudy),
+                    label: Text('Weather'),
+                  ),
+                  NavigationRailDestination(
+                    icon: Icon(Icons.add_circle),
+                    selectedIcon: Icon(Icons.note_add),
+                    label: Text('Quiknote'),
+                  ),
+                ],
+                groupAlignment: 0.0,
+                elevation: 20,
+                minWidth: 30,
+                selectedLabelTextStyle: TextStyle(color: Colors.deepPurple),
+                selectedIconTheme: IconThemeData(color: Colors.deepPurple),
               ),
-            ),
-            Container(
-              alignment: Alignment.centerRight,
-              width: double.infinity,
-              height: 100,
-              child: Text(_output,
-                  style: TextStyle(
-                      fontSize: 60,
-                      color: Colors.black,
-                      fontFamily: 'Montserrat')),
-            ),
-            Row(
-              children: <Widget>[
-                buildButton('7'),
-                buildButton('8'),
-                buildButton('9'),
-                buildButton('*')
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                buildButton('4'),
-                buildButton('5'),
-                buildButton('6'),
-                buildButton('/')
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                buildButton('1'),
-                buildButton('2'),
-                buildButton('3'),
-                buildButton('-')
-              ],
-            ),
-            Row(
-              children: <Widget>[
-                buildButton('00'),
-                buildButton('0'),
-                buildButton('.'),
-                buildButton('+')
-              ],
-            ),
-            Row(
-              children: <Widget>[buildButton('Clear'), buildButton('=')],
-            ),
-            Row(
-              children: <Widget>[
-                buildButton('History+'),
-              ],
-            ),
-          ],
+              showPage(curIndex)
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  Widget showPage(int curIndex) {
+    switch (curIndex) {
+      case 0:
+        print('Case 0 bro...');
+        return Calculator();
+        break;
+      case 1:
+        print('Case 1 bro..');
+        return Calculator();
+        break;
+      case 2:
+        print('Case 2 bro..');
+        return WeatherPage();
+      case 3: 
+      print('Case 3 bro');
+      return QuikNote();
+      break;
+      default:
+        return QuikNote();
+    }
   }
 }
