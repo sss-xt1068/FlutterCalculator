@@ -13,8 +13,8 @@ class _WeatherPageState extends State<WeatherPage> {
   // static WebViewController weatherController;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 280,
+    return Expanded(
+      // width: 280,
       child: WebView(
         onWebViewCreated: (WebViewController c) {
           controller.complete(c);

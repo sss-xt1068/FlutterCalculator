@@ -3,29 +3,27 @@ import 'package:calculator/pages/calculator.dart';
 import 'package:calculator/pages/notes.dart';
 import 'package:calculator/pages/weather.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
-void main() => runApp(MyApp());
-
-// List themes = new List(darkTheme, normalTheme);
-ThemeData darkTheme = ThemeData(
-  primaryColor: Colors.brown[800],
-  primaryColorBrightness: Brightness.dark,
-  primaryIconTheme: IconThemeData(color: Colors.amber[700], size: 40),
-);
-ThemeData normalTheme = ThemeData(
-  primaryColor: Colors.blue,
-  primaryColorBrightness: Brightness.light,
-  primaryIconTheme: IconThemeData(color: Colors.amber[300], size: 40),
-);
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MyCalc',
+      title: 'ActivityCombo',
       theme: ThemeData(
-        primarySwatch: Colors.amber,
-      ),
+          primaryColorDark: Colors.grey[200],
+          primaryColor: Colors.deepPurple[100],
+          highlightColor: Colors.orange,
+          accentColorBrightness: Brightness.dark,
+          scaffoldBackgroundColor: Colors.black87,
+          accentColor: Colors.orange,
+          buttonColor: Colors.amber,
+          textSelectionColor: Colors.white),
       debugShowCheckedModeBanner: false,
       home: MainPage(),
     );
@@ -38,33 +36,28 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int curIndex = 3;
+  int curIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 10,
-        title: Text('MultiPurpose'),
+        title: Text('ActivityCombo'),
       ),
       body: SafeArea(
         child: Container(
           child: Row(
             children: <Widget>[
               NavigationRail(
+                backgroundColor: Color.fromRGBO(154,219,246, 0.75),
                 selectedIndex: curIndex,
                 onDestinationSelected: (int index) {
                   setState(() {
                     curIndex = index;
                   });
-                  // print('pupupupu ' + curIndex.toString());
                 },
                 labelType: NavigationRailLabelType.selected,
                 destinations: [
-                  NavigationRailDestination(
-                    icon: Icon(Icons.calendar_today),
-                    selectedIcon: Icon(Icons.calendar_today),
-                    label: Text('Calendar'),
-                  ),
                   NavigationRailDestination(
                     icon: Icon(Icons.add),
                     selectedIcon: Icon(Icons.add_box),
@@ -84,8 +77,10 @@ class _MainPageState extends State<MainPage> {
                 groupAlignment: 0.0,
                 elevation: 20,
                 minWidth: 30,
-                selectedLabelTextStyle: TextStyle(color: Colors.deepPurple),
-                selectedIconTheme: IconThemeData(color: Colors.deepPurple),
+                selectedIconTheme:
+                    IconThemeData(color: Colors.amber),
+                selectedLabelTextStyle:
+                    TextStyle(color: Colors.amber[500]),
               ),
               showPage(curIndex)
             ],
@@ -103,15 +98,11 @@ class _MainPageState extends State<MainPage> {
         break;
       case 1:
         print('Case 1 bro..');
-        return Calculator();
+        return new WeatherPage();
         break;
       case 2:
         print('Case 2 bro..');
-        return WeatherPage();
-      case 3: 
-      print('Case 3 bro');
-      return QuikNote();
-      break;
+        return QuikNote();
       default:
         return QuikNote();
     }
